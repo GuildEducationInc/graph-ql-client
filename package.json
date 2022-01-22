@@ -1,0 +1,72 @@
+{
+  "name": "graph-ql-client",
+  "version": "1.0.0",
+  "description": "A module to facilitate a graphQL connection, making queries and processing the responses.",
+  "homepage": "https://github.com/guildeducationinc/graph-ql-client#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/guildeducationinc/graph-ql-client.git"
+  },
+  "author": "monica.castaneda@guildeducation.com",
+  "license": "unlicensed",
+  "private": true,
+  "engines": {
+    "node": "14.10.1"
+  },
+  "prettier": "@guildeducationinc/prettier-config",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "spec/**/*.js": [
+      "prettier --write spec/**/*.ts",
+      "prettier --write spec/**/*.js",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "prettier --write src/**/*.ts",
+      "prettier --write src/**/*.js",
+      "git add"
+    ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".js"
+    ],
+    "exclude": [
+      "spec/**/*",
+      "lib/*",
+      "coverage/*",
+      "*.zip/**/*"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "all": true
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "STAGE=test npm run test.unit",
+    "test.unit": "SILENT=true STAGE=test mocha ./spec/unit/**/*.spec.{js,ts} --opts ./mocha.opts"
+  },
+  "dependencies": {
+    "@guildeducationinc/guild-logger": "^1.1.9",
+    "@guildeducationinc/guild-metrics": "^2.2.0",
+    "@guildeducationinc/ta-shared": "^1.0.2",
+    "camelcase-keys": "^6.1.1",
+    "pg-format": "^1.0.4"
+  },
+  "devDependencies": {
+    "@guildeducationinc/prettier-config": "^2.0.1",
+    "@types/mocha": "^8.2.2",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "mocha": "^6.2.2",
+    "nyc": "^15.1.0",
+    "prettier": "^1.19.1",
+    "ts-node": "^9.1.1"
+  }
+}
