@@ -53,8 +53,6 @@
     "test.unit": "SILENT=true STAGE=test mocha ./spec/unit/**/*.spec.{js,ts} --opts ./mocha.opts"
   },
   "dependencies": {
-    "@guildeducationinc/guild-logger": "^1.1.9",
-    "@guildeducationinc/guild-metrics": "^2.2.0",
     "@guildeducationinc/ta-shared": "^1.0.2",
     "camelcase-keys": "^6.1.1",
     "graphql-tools": "^4.0.0",
