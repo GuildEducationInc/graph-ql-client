@@ -1,0 +1,102 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NPM_TOKEN: ${{ secrets.DEVOPS_ALL_NPM_TOKEN }}
+
+jobs:
+  install_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Cache Linux node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        run: |
+          npm install -g yarn
+          yarn install --frozen-lockfile
+
+  test-build:
+    runs-on: ubuntu-latest
+    needs: [install_dependencies]
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Restore node modules cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        run: |
+          npm install -g yarn
+          yarn install --frozen-lockfile
+
+      - name: Test code
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+
+  publish:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: [install_dependencies, test-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Restore node modules cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        run: |
+          npm install -g yarn
+          yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+
+      - name: Release
+        env:
+          NPM_TOKEN: ${{ secrets.DEVOPS_ALL_NPM_TOKEN_PUBLISH }}
+          GITHUB_TOKEN: ${{ secrets.DEVOPS_SEMANTIC_RELEASE_TOKEN }}
+        run: npx semantic-release
