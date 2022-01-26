@@ -11,7 +11,7 @@
   "license": "UNLICENSED",
   "private": true,
   "engines": {
-    "node": "14.10.1",
+    "node": "^14.10.1",
     "yarn": "^1.4"
   },
   "prettier": "@guildeducationinc/prettier-config",
