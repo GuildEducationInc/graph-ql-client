@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const { AutoRefreshOnExpireAuth0Client } = require('@guildeducationinc/ta-shared/lib/clients');
-const {FALSE, TRUE} = require("pg-format/lib/reserved");
+const { FALSE, TRUE } = require('pg-format/lib/reserved');
 
 class GraphqlError extends Error {}
 
@@ -38,7 +38,6 @@ function containsErrors(responseBody) {
   return false;
 }
 
-
 function GraphQlQueryReponse(query) {
   const host = process.env.APPSYNC_HOST;
   const clientId = process.env.FUNDING_ADMIN_CLIENT_ID;
@@ -47,8 +46,8 @@ function GraphQlQueryReponse(query) {
   const domain = process.env.AUTH0_DOMAIN;
   const publicKey = process.env.AUTH0_GUILD_JWT_PEM;
   const auth0Client = new AutoRefreshOnExpireAuth0Client(
-      {clientId, clientSecret, audience, domain, publicKey},
-      fetch
+    { clientId, clientSecret, audience, domain, publicKey },
+    fetch
   );
   const client = new GraphQlClient(auth0Client, host);
   let response;
@@ -61,7 +60,6 @@ function GraphQlQueryReponse(query) {
   return response;
 }
 
-
 async function compareGraphQlQueryResponse(query, expectedResponse) {
   const expectedResponseJson = JSON.parse(expectedResponse);
   response = await GraphQlQueryReponse(query);
@@ -70,6 +68,5 @@ async function compareGraphQlQueryResponse(query, expectedResponse) {
   }
   return TRUE;
 }
-
 
 module.exports = { GraphQlClient, GraphQlQueryReponse, compareGraphQlQueryResponse };

@@ -1,0 +1,35 @@
+dir: &dir ~/graph-ql-client
+docker_image: &docker_image guildeducation/node:14.10.1
+npm_authenticate: &npm_authenticate
+  name: NPM Authenticate
+  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+yarn_install: &yarn_install
+  name: Install
+  command: yarn install
+
+version: 2
+jobs:
+  publish:
+    docker:
+      - image: *docker_image
+    working_directory: *dir
+    steps:
+      - checkout
+      - run: *npm_authenticate
+      - run: *yarn_install
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Publish
+          command: npm publish
+
+workflows:
+  version: 2
+  test_publish:
+    jobs:
+      - publish:
+          filters:
+            branches:
+              only:
+                - main
