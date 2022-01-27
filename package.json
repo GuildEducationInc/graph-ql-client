@@ -1,5 +1,5 @@
 {
-  "name": "graphql-response-analysis",
+  "name": "@guildeducationinc/graphql-response-analysis",
   "version": "1.0.0",
   "description": "A module to facilitate a graphQL connection, making queries and processing the responses.",
   "homepage": "https://github.com/guildeducationinc/graph-ql-client#readme",
