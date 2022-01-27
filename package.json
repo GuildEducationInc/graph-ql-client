@@ -9,7 +9,6 @@
   },
   "author": "monica.castaneda@guildeducation.com",
   "license": "UNLICENSED",
-  "private": true,
   "engines": {
     "node": "^14.10.1"
   },
