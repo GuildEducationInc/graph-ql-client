@@ -1,1 +1,5 @@
-export { GraphQlClient, GraphQlQueryReponse, compareGraphQlQueryResponse } from './graphQlClient.js';
+export {
+  GraphQlClient,
+  GraphQlQueryReponse,
+  compareGraphQlQueryResponse,
+} from './graphQlClient.js';
