@@ -14,7 +14,7 @@ class GraphQlClient {
     const token = await this.authStrategy.requestToken();
     let response;
     try {
-      response = await fetch(this.host, {
+      const response = await fetch(this.host, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: token },
         body: JSON.stringify({ query }),
@@ -50,9 +50,8 @@ function GraphQlQueryReponse(query) {
     fetch
   );
   const client = new GraphQlClient(auth0Client, host);
-  let response;
   try {
-    response = client.request(query);
+    const response = client.request(query);
   } catch (error) {
     console.log('Query request failed.');
     throw error;
@@ -62,7 +61,7 @@ function GraphQlQueryReponse(query) {
 
 async function compareGraphQlQueryResponse(query, expectedResponse) {
   const expectedResponseJson = JSON.parse(expectedResponse);
-  response = await GraphQlQueryReponse(query);
+  const response = await GraphQlQueryReponse(query);
   if (JSON.stringify(response) != JSON.stringify(expectedResponseJson)) {
     return FALSE;
   }
